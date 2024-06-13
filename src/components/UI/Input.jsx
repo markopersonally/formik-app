@@ -3,6 +3,11 @@ import styled from "styled-components";
 const DivStyled = styled.div`
   display: flex;
   flex-direction: column;
+
+  &.regulations {
+    flex-direction: row;
+    color: white;
+  }
 `;
 
 const LabelStyled = styled.label`
@@ -25,11 +30,18 @@ const DivError = styled.div`
   text-align: center;
 `;
 
-export default function Input({ label, id, error, ...props }) {
+export default function Input({
+  label,
+  id,
+  error,
+  onFocus,
+  onChange,
+  ...props
+}) {
   return (
     <DivStyled>
       <LabelStyled htmlFor={id}>{label} :</LabelStyled>
-      <InputStyled id={id} {...props} />
+      <InputStyled id={id} onFocus={onFocus} onChange={onChange} {...props} />
       <DivError>{error && <p>{error}</p>}</DivError>
     </DivStyled>
   );

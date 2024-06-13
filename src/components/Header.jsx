@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import ButtonStyled from "./Button.jsx";
+import ButtonStyled from "./UI/Button.jsx";
 import logoImg from "../images/logo.png";
 
 const HeaderStyled = styled.header`
