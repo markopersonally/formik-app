@@ -21,6 +21,10 @@ const ButtonStyled = styled.button`
     text-transform: uppercase;
     background-color: #ffd700;
     margin-right: 50px;
+
+    @media (max-width: 768px) {
+      margin-right: 0px;
+    }
   }
 
   &.logout:hover {
@@ -45,6 +49,16 @@ const ButtonStyled = styled.button`
 
   &.register:hover {
     background-color: #5cca81;
+  }
+
+  &.switchBtn {
+    background-color: transparent;
+    text-decoration: underline;
+  }
+
+  &.switchBtn:hover {
+    color: #2c538f;
+    transition: color 0.4s;
   }
 `;
 

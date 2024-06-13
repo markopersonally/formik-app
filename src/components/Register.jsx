@@ -1,15 +1,25 @@
 import React from "react";
-import FormStyled from "./UI/Form.jsx";
 import Input from "./UI/Input.jsx";
 import ButtonStyled from "./UI/Button.jsx";
+import FormStyled from "./UI/Form.jsx";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import styled from "styled-components";
+
+const DivFlex = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+`;
 
 const validationSchema = Yup.object({
   yourName: Yup.string()
     .min(3, "Your name must be at least 3 characters long")
     .required("Required"),
-  username: Yup.string().email("Invalid email address").required("Required"),
+  emailRegister: Yup.string()
+    .email("Invalid email address")
+    .required("Required"),
   age: Yup.number()
     .min(18, "You must be at least 18 years old")
     .required("Required"),
@@ -25,19 +35,18 @@ const validationSchema = Yup.object({
     .required("Required"),
 });
 
-export default function RegisterForm({ handleRegister }) {
+export default function RegisterForm({ handleRegister, handleToggle }) {
   const formik = useFormik({
     initialValues: {
       yourName: "",
-      username: "",
+      emailRegister: "",
       age: "",
       passwordRegister: "",
       repeatPassword: "",
       regulations: false,
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: () => {
       handleRegister();
     },
   });
@@ -47,79 +56,82 @@ export default function RegisterForm({ handleRegister }) {
     formik.setFieldError(field, null);
   };
 
+  const handleBlur = (field) => {
+    if (formik.values[field]) {
+      formik.setFieldTouched(field, true, true);
+    } else {
+      formik.setFieldTouched(field, false, true);
+    }
+  };
+
   return (
     <FormStyled onSubmit={formik.handleSubmit}>
-      <Input
-        label="Your name"
-        id="yourName"
-        name="yourName"
-        type="text"
-        value={formik.values.yourName}
-        onChange={formik.handleChange}
-        onFocus={() => handleFocus("yourName")}
-        onBlur={formik.handleBlur}
-        error={formik.touched.yourName && formik.errors.yourName}
-      />
-      <Input
-        label="Username"
-        id="username"
-        name="username"
-        type="email"
-        value={formik.values.username}
-        onChange={formik.handleChange}
-        onFocus={() => handleFocus("username")}
-        onBlur={formik.handleBlur}
-        error={formik.touched.username && formik.errors.username}
-      />
+      <DivFlex>
+        <Input
+          label="Your name"
+          id="yourName"
+          type="text"
+          {...formik.getFieldProps("yourName")}
+          error={formik.touched.yourName && formik.errors.yourName}
+          onFocus={() => handleFocus("yourName")}
+          onBlur={() => handleBlur("yourName")}
+        />
+        <Input
+          label="Email"
+          id="emailRegister"
+          type="email"
+          {...formik.getFieldProps("emailRegister")}
+          error={formik.touched.emailRegister && formik.errors.emailRegister}
+          onFocus={() => handleFocus("emailRegister")}
+          onBlur={() => handleBlur("emailRegister")}
+        />
+      </DivFlex>
       <Input
         label="Age"
         id="age"
-        name="age"
         type="number"
-        value={formik.values.age}
-        onChange={formik.handleChange}
-        onFocus={() => handleFocus("age")}
-        onBlur={formik.handleBlur}
+        {...formik.getFieldProps("age")}
         error={formik.touched.age && formik.errors.age}
+        onFocus={() => handleFocus("age")}
+        onBlur={() => handleBlur("age")}
       />
-      <Input
-        label="Password"
-        id="passwordRegister"
-        name="passwordRegister"
-        type="password"
-        value={formik.values.passwordRegister}
-        onChange={formik.handleChange}
-        onFocus={() => handleFocus("passwordRegister")}
-        onBlur={formik.handleBlur}
-        error={
-          formik.touched.passwordRegister && formik.errors.passwordRegister
-        }
-      />
-      <Input
-        label="Repeat password"
-        id="repeatPassword"
-        name="repeatPassword"
-        type="password"
-        value={formik.values.repeatPassword}
-        onChange={formik.handleChange}
-        onFocus={() => handleFocus("repeatPassword")}
-        onBlur={formik.handleBlur}
-        error={formik.touched.repeatPassword && formik.errors.repeatPassword}
-      />
+      <DivFlex>
+        <Input
+          label="Password"
+          id="passwordRegister"
+          type="password"
+          {...formik.getFieldProps("passwordRegister")}
+          error={
+            formik.touched.passwordRegister && formik.errors.passwordRegister
+          }
+          onFocus={() => handleFocus("passwordRegister")}
+          onBlur={() => handleBlur("passwordRegister")}
+        />
+        <Input
+          label="Repeat password"
+          id="repeatPassword"
+          type="password"
+          {...formik.getFieldProps("repeatPassword")}
+          error={formik.touched.repeatPassword && formik.errors.repeatPassword}
+          onFocus={() => handleFocus("repeatPassword")}
+          onBlur={() => handleBlur("repeatPassword")}
+        />
+      </DivFlex>
       <Input
         className="regulations"
         label="I have read and accept the regulations"
         id="regulations"
-        name="regulations"
         type="checkbox"
-        checked={formik.values.regulations}
-        onChange={formik.handleChange}
-        onFocus={() => handleFocus("regulations")}
-        onBlur={formik.handleBlur}
+        {...formik.getFieldProps("regulations")}
         error={formik.touched.regulations && formik.errors.regulations}
+        onFocus={() => handleFocus("regulations")}
+        onBlur={() => handleBlur("regulations")}
       />
       <ButtonStyled type="submit" className="register">
         Register
+      </ButtonStyled>
+      <ButtonStyled type="button" className="switchBtn" onClick={handleToggle}>
+        Back to login
       </ButtonStyled>
     </FormStyled>
   );

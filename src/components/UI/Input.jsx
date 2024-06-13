@@ -23,6 +23,11 @@ const InputStyled = styled.input`
   color: #fff;
   background-color: #424242;
   border-radius: 5px;
+
+  &:focus{
+    background-color: #827e7e;
+    transition: all 0.4s;
+  }
 `;
 
 const DivError = styled.div`

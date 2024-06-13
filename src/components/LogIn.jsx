@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Input from "./UI/Input.jsx";
 import ButtonStyled from "./UI/Button.jsx";
 import FormStyled from "./UI/Form.jsx";
@@ -14,22 +14,29 @@ const validationSchema = Yup.object({
 });
 
 export default function LogInForm({ handleToggle, onLogin }) {
+  const [touchedFields, setTouchedFields] = useState({
+    email: false,
+    password: false,
+  });
+
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      // Simulate successful login
-      console.log(values);
+    onSubmit: () => {
       onLogin();
     },
   });
 
   const handleFocus = (field) => {
-    formik.setFieldTouched(field, false, false);
-    formik.setFieldError(field, null);
+    setTouchedFields((prev) => ({ ...prev, [field]: false }));
+  };
+
+  const handleChange = (e) => {
+    formik.handleChange(e);
+    setTouchedFields((prev) => ({ ...prev, [e.target.name]: true }));
   };
 
   return (
@@ -39,27 +46,29 @@ export default function LogInForm({ handleToggle, onLogin }) {
         id="email"
         name="email"
         type="email"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
+        onChange={handleChange}
         onFocus={() => handleFocus("email")}
+        onBlur={formik.handleBlur}
         value={formik.values.email}
-        error={formik.touched.email && formik.errors.email}
+        error={touchedFields.email && formik.errors.email}
       />
       <Input
         label="Password"
         id="passwordLogin"
         name="password"
         type="password"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
+        onChange={handleChange}
         onFocus={() => handleFocus("password")}
+        onBlur={formik.handleBlur}
         value={formik.values.password}
-        error={formik.touched.password && formik.errors.password}
+        error={touchedFields.password && formik.errors.password}
       />
       <ButtonStyled type="submit" className="logIn">
         Log in
       </ButtonStyled>
-      <a href="#" onClick={handleToggle}>No account?</a>
+      <ButtonStyled className="switchBtn" onClick={handleToggle}>
+        No account?
+      </ButtonStyled>
     </FormStyled>
   );
 }
