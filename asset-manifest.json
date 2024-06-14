@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/formik-app/static/css/main.c38f2c60.css",
+    "main.js": "/formik-app/static/js/main.01113173.js",
+    "index.html": "/formik-app/index.html",
+    "main.c38f2c60.css.map": "/formik-app/static/css/main.c38f2c60.css.map",
+    "main.01113173.js.map": "/formik-app/static/js/main.01113173.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c38f2c60.css",
+    "static/js/main.01113173.js"
+  ]
+}
